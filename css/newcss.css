@@ -1,0 +1,51 @@
+html {
+    background: url("../image/fon.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.link{
+    color: #03dac6;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.error{
+    color: black;
+    text-align: center;
+    font-size: 200%;
+}
+
+.button {
+    width: 38%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 1% ;
+    border: none;
+    margin: auto;
+    display: block;
+    border-radius: 10px;
+    font-size: 100%;
+}
+
+.main{
+    width: 70%;    
+    border-radius: 5px;
+    background: rgba(250,60,60,0.47);
+    box-shadow: 1px 1px 50px #000;
+    margin: 2% auto ;
+    display: block;
+    font-size: 200%;
+    padding: 1%;
+    color: #ddd;
+    text-align: center;
+}
+
+textarea{
+    height: 99%;
+    width: 99%;
+    font-size: 140%;
+}
