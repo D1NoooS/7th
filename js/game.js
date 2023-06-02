@@ -160,7 +160,7 @@ function movedrop(drop) {
                     left: ((drop["x"]) * $("#game").width() / 100).toString(),
                 }, 0).css(
                 {
-                    "backgroundColor": color(drop['color']),
+                    "background-image": color(drop['color']),
                 });
     } else if (drop["x"] > 100) {
         $("#drop" + drop["y"]).animate(
@@ -183,13 +183,13 @@ function color(color) {
     switch (color)
     {
         case 1 :
-            return "green";
+            return 'url("../image/cloud_1.png")';
         case 2 :
-            return "red";
+            return 'url("../image/cloud_2.png")';
         case 3:
-            return "yellow";
+            return 'url("../image/cloud_3.png")';
         default :
-            return "blue";
+            return 'url("../image/cloud_2.png")';
     }
 }
 
