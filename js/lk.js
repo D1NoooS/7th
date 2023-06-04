@@ -23,7 +23,7 @@ function logout() {
                 success: function (response) {
                     console.log('response: ', response);
                     if (!response) {
-                        window.location.replace('../html/login.html');
+                        window.location.replace('../index.html');
                     } else {
                         setTimeout(() => {
                             window.location.replace('../index.html');
@@ -32,7 +32,7 @@ function logout() {
                     ;
                 },
                 error: function () {
-                    window.location.replace('../html/login.html');
+                    window.location.replace('../index.html');
                 }
             }
     );

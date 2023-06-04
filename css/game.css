@@ -51,8 +51,10 @@ div{
     background-size: 200%;
     border-radius: 40px;
     display: block;
-    padding: 2%;
-    margin: 0.5% auto ;
+    padding-right: 10%;
+    padding-bottom: 2%;
+    padding-top: 2%;
+    margin: 0.5% auto;
     height: 2550px;
     width: 2800px;
     z-index: 1;
@@ -65,7 +67,8 @@ div{
     border-radius: 40px;
     display: block;
     margin: 0 auto ;
-    width: 3000px;
+    width: 3300px;
+    min-height: 84%;
 }
 
 .element_q1{
@@ -90,7 +93,7 @@ div{
 
 .cloud{
     font-family: "Geometria-Medium";
-    color: white;
+    color: black;
     position: relative;
     background-image: url("../image/cloud.png");
     opacity: 0%;
@@ -102,7 +105,7 @@ div{
 }
 
 .infs{
-    font-size: 400%;
+    font-size: 600%;
     font-weight: bold;
     text-align: center;
     width: 100%;
