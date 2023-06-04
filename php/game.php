@@ -3,24 +3,21 @@ header("Access-Control-Allow-Origin: *");
 $data = json_decode(file_get_contents("php://input"));
 session_start();
 $level_number;
-$current_time = ((date('h') * 3600) + (date('i') * 60) + date('s'));
-$time_on_question;
-$question;
-$right_answer;
-$drops;
-$bowl;
+$time2;
+$clouds;
+$balloon;
 $from_begin;
+$aim;
 $game_continue;
 $wait;
 $speed;
 $change;
+$time1;
 $user_points;
 $message = "";
 $play_number = 0;
-$max_level = 0;
 $login = "";
 $password = "";
-$Time_ = 0;
 if (array_key_exists('login', $_SESSION)) {
     $login = $_SESSION['login'];
 }
@@ -30,17 +27,14 @@ if (array_key_exists('password', $_SESSION)) {
 if (array_key_exists('level', $_SESSION)) {
     $level_number = $_SESSION["level"];
 }
-if (array_key_exists('time_on_question', $_SESSION)) {
-    $time_on_question = $_SESSION["time_on_question"];
+if (array_key_exists('time1', $_SESSION)) {
+    $time1 = $_SESSION["time1"];
 }
-if (array_key_exists('question', $_SESSION)) {
-    $question = $_SESSION["question"];
-}
-if (array_key_exists('right_answer', $_SESSION)) {
-    $right_answer = $_SESSION["right_answer"];
+if (array_key_exists('aim', $_SESSION)) {
+    $aim = $_SESSION["aim"];
 }
 if (array_key_exists('answers', $_SESSION)) {
-    $drops = $_SESSION["answers"];
+    $clouds = $_SESSION["answers"];
 }
 if (array_key_exists('from_begin', $_SESSION)) {
     $from_begin = $_SESSION["from_begin"];
@@ -60,11 +54,11 @@ if (array_key_exists('speed', $_SESSION)) {
 if (array_key_exists('user_points', $_SESSION)) {
     $user_points = $_SESSION["user_points"];
 }
-if (array_key_exists('bowl', $_SESSION)) {
-    $bowl = $_SESSION["bowl"];
+if (array_key_exists('balloon', $_SESSION)) {
+    $balloon = $_SESSION["balloon"];
 }
 if ($data->answered != -1) {
-    $bowl["y"] = $data->answered;
+    $balloon["y"] = $data->answered;
 }
 $other_users = [];
 $file_datas = json_decode(file_get_contents("../data/statictics.json"), true);
@@ -76,54 +70,50 @@ foreach ($file_datas as $element) {
         array_push($other_users, $element);
     }
 }
-
+$time2 = ((date('h') * 3600) + (date('i') * 60) + date('s'));
 if ($from_begin) {
-    $time_on_question = ((date('h') * 3600) + (date('i') * 60) + date('s'));
-    $current_time = $time_on_question;
+    $time1 = ((date('h') * 3600) + (date('i') * 60) + date('s'));
     generation();
     $user_points = 0;
     $from_begin = false;
     $play_number++;
 } else {
-    if (($current_time - $time_on_question) > $max_time) {
-        $max_time = ($current_time - $time_on_question);
+    if (($time2 - $time1) > $max_time) {
+        $max_time = ($time2 - $time1);
     }
     $user_points = check();
     if ($data->answered == -1) {
-        $drops = generate($level_number, true)['answers'];
+        $clouds = generate($level_number, true)['answers'];
     }
-    //проверка условия "> заданного числа" !!!!!!!!!!!
-    if (($user_points < $question && $user_points!=-1000)) {
+    if (($user_points < $aim && $user_points!=-1000)) {
         $message = "Неправильно!";
         $from_begin = true;
     }
     echo json_encode(
             [
                 "level" => $level_number,
-                "time" => ($current_time - $time_on_question),
-                "question" => $question,
-                "clouds" => $drops,
+                "time" => ($time2 - $time1),
+                "aim" => $aim,
+                "clouds" => $clouds,
                 "message" => $message,
-                "balloon" => $bowl,
+                "balloon" => $balloon,
                 "user_points" => $user_points
             ]
     );
     
 }
 $_SESSION["level"] = $level_number;
-$_SESSION["current_time"] = $current_time;
-$_SESSION["time_on_question"] = $time_on_question;
-$_SESSION["question"] = $question;
-$_SESSION["right_answer"] = $right_answer;
-$_SESSION["answers"] = $drops;
+$_SESSION["time2"] = $time2;
+$_SESSION["time1"] = $time1;
+$_SESSION["aim"] = $aim;
+$_SESSION["answers"] = $clouds;
 $_SESSION["from_begin"] = $from_begin;
 $_SESSION["game_continue"] = $game_continue;
 $_SESSION["wait"] = $wait;
 $_SESSION["speed"] = $speed;
 $_SESSION["user_points"] = $user_points;
 $_SESSION["change"] = $change;
-$_SESSION["bowl"] = $bowl;
-$_SESSION["Time_"] = $Time_;
+$_SESSION["balloon"] = $balloon;
 $statistics_data = [
     "login" => $login,
     "play_number" => $play_number,
@@ -135,63 +125,61 @@ usort($other_users, function ($a, $b) {
 });
 file_put_contents("../data/statictics.json", json_encode(($other_users)));
 
-//ПРОВЕРКА НА СТОЛКНОВЕНИЕ
 function check() {
-    global $drops, $bowl;
-    if ($drops[$bowl["y"] - 1]["x"] <= 0 ) {
-        return $drops[$bowl["y"] - 1]["number"];
+    global $clouds, $balloon;
+    if ($clouds[$balloon["y"] - 1]["x"] <= 0 ) {
+        return $clouds[$balloon["y"] - 1]["number"];
     }
     return -1000;
 }
 
 function generation($move = false) {
-    global $level_number, $current_time, $time_on_question, $message,
-    $question, $drops, $Time_, $bowl, $user_points;
+    global $level_number, $time2, $time1, $message,
+    $aim, $clouds, $balloon, $user_points;
     $temp = generate($level_number, $move);
-    $question = $temp["question"];
-    $drops = $temp["answers"];
+    $aim = $temp["aim"];
+    $clouds = $temp["answers"];
     echo json_encode(
             [
-                "time" => ($current_time - $time_on_question),
-                "question" => $question,
-                "clouds" => $drops,
-                "baloon" => $bowl,
+                "time" => ($time2 - $time1),
+                "aim" => $aim,
+                "clouds" => $clouds,
+                "baloon" => $balloon,
                 "user_points" => $user_points,
                 "message" => $message
             ]
     );
 }
 
-//ГЕНЕРАЦИЯ УСЛОВИЯ
 function generate($level, $move) {
-    global $question;
+    global $aim;
     $first = rand(-8,8);
     if (!$move) {
-        $question = $first;
+        $aim = $first;
     }
-    $drops1 = [];
+    $clouds1 = [];
     for ($i = 1; $i <= 5; $i++) {
-        $dropInfo = generateDrop($i, $move);
-        array_push($drops1, $dropInfo);
+        $cloudInfo = generatecloud($i, $move);
+        array_push($clouds1, $cloudInfo);
     }
     return [
-        "question" => $question,
-        "answers" => $drops1
+        "aim" => $aim,
+        "answers" => $clouds1
     ];
 }
 
-function generateDrop($i, $move) {
-    global $speed, $drops, $level;
+function generatecloud($i, $move) {
+    global $speed, $clouds, $level;
     if ($move) {
-        if ($drops[$i - 1]['x'] <= 0) {
-            return generateDrop($i, !$move);
+        if ($clouds[$i - 1]['x'] <= 0) {
+            return generatecloud($i, !$move);
         }
         return [
-            "y" => $drops[$i - 1]['y'],
-            "x" => $drops[$i - 1]['x'] - $speed,
-            "id" => $drops[$i - 1]['id'],
-            "number" => $drops[$i - 1]['number'],
-            "color" => $drops[$i - 1]['color']
+            "y" => $clouds[$i - 1]['y'],
+            "x" => $clouds[$i - 1]['x'] - $speed,
+            "id" => $clouds[$i - 1]['id'],
+            "number" => $clouds[$i - 1]['number'],
+            "color" => $clouds[$i - 1]['color']
         ];
     }
     return [

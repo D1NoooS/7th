@@ -3,25 +3,14 @@ $('document').ready(function(){
     $("#reg_button").click(function(){
         check_registration();
     });
-   
     $("#reg_2_log").click(function(){
         window.location.replace('login.html');
     });
-    document.getElementById("name").addEventListener("input", function(){
-        //check_name("name");
+    document.addEventListener('keydown', function (event) {
+        if(event.code === 'Enter' ){ 
+            check_registration();
+        }
     });
-    document.getElementById("surname").addEventListener("input", function(){
-        //check_name("surname");
-    });
-    document.getElementById("login").addEventListener("input", function(){
-       // check_extra("login");
-    });
-    document.getElementById("password").addEventListener("input", function(){
-       // check_extra("password");
-    }); 
-     document.addEventListener('keydown', function (event) {
-         if(event.code === 'Enter' ){ check_registration();}
-         })
 });
 
 function check_registration(){
@@ -54,8 +43,8 @@ function check_registration(){
                 };
             },
             error: function () {
-        var msg = 'Ошибка соединения';
-          $("#message").show();
+                var msg = 'Прооизошла ошибка!';
+                $("#message").show();
                 document.getElementById("message").innerHTML = msg;
                 setTimeout(() => {
                     $("#message").hide();
@@ -69,11 +58,9 @@ function replace(data, field_id, span_id, input_id){
     let log_err = document.getElementById(span_id);
     if (data[field_id] !== ""){
         log_err.innerHTML = data[field_id];
-        // $(`#${input_id}`).hide();
         $(`#${span_id}`).show();
         setTimeout(() => {
             $(`#${span_id}`).hide();
-          //  $(`#${input_id}`).show();
-        }, 1500);
+        }, 3000);
     };
 };

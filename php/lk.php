@@ -3,11 +3,10 @@ header("Access-Control-Allow-Origin: *");
 
 session_start();
 $level_number = null;
-$current_time = null;
-$time_on_question = null;
-$question = null;
-$right_answer = null;
-$drops = null;
+$time2 = null;
+$time1 = null;
+$aim = null;
+$clouds = null;
 $from_begin = true;
 $game_continue = false;
 $wait = false;
@@ -16,7 +15,7 @@ $login = "";
 $password = "";
 $speed = 2;
 $user_points = 0;
-$bowl = ["x" => 0, "y" => 3];
+$balloon = ["x" => 0, "y" => 3];
 if (array_key_exists('login', $_SESSION)) {
     $login = $_SESSION['login'];
 }
@@ -39,17 +38,16 @@ if ($login == null and $password == null) {
         }
     }
     $_SESSION["level"] = $level_number;
-    $_SESSION["current_time"] = $current_time;
-    $_SESSION["time_on_question"] = $time_on_question;
-    $_SESSION["question"] = $question;
-    $_SESSION["right_answer"] = $right_answer;
-    $_SESSION["answers"] = $drops;
+    $_SESSION["time2"] = $time2;
+    $_SESSION["time1"] = $time1;
+    $_SESSION["aim"] = $aim;
+    $_SESSION["answers"] = $clouds;
     $_SESSION["from_begin"] = $from_begin;
     $_SESSION["game_continue"] = $game_continue;
     $_SESSION["wait"] = $wait;
     $_SESSION["speed"] = $speed;
     $_SESSION["user_points"] = $user_points;
-    $_SESSION["bowl"] = $bowl;
+    $_SESSION["balloon"] = $balloon;
     $_SESSION["change"] = $change;
     echo json_encode([
         "successful" => true,

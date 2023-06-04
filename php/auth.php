@@ -1,7 +1,5 @@
 <?php
-
 header("Access-Control-Allow-Origin: *");
-
 $data = json_decode(file_get_contents("php://input"));
 $login_error = "Такой пользователь не зарегистрирован!";
 $password_error = "";
@@ -9,7 +7,7 @@ $login = $data->login;
 $password = $data->password;
 $successful = false;
 if ($login == null) {
-    $login_error = "Поле Логин не может быть пустым!";
+    $login_error = "Введите логин!";
 };
 $file_data = json_decode(file_get_contents("../data/users.json"));
 foreach ($file_data as $element) {

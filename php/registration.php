@@ -1,7 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-//header('Content-type:application/json;charset=utf-8');
-
+    header("Access-Control-Allow-Origin: *");
     $data = json_decode(file_get_contents("php://input"));
     $successful = True;
     $file_data = json_decode(file_get_contents("../data/users.json"));
@@ -31,7 +29,6 @@ header("Access-Control-Allow-Origin: *");
             "gender" => $data->gender,
             "login" => $data->login,
             "password" => $data->password,
-            "review" => []
         );
         array_push($file_data, $current_user);
         file_put_contents("../data/users.json", json_encode($file_data));
@@ -56,16 +53,10 @@ function check_name($data){
         };
     };
     if ($name == null){
-        return "Поле Имя не может быть пустым!";
+        return "Введите имя!";
     };
     if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "В поле Имя допустимы лишь буквы";
-    };
-    if (!preg_match('/^[А-ЯA-Z][а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "Имя должно начинаться с заглавной буквы!";
-    };
-    if (!preg_match('/^[А-ЯA-Z][а-яa-z]{0,30}+$/u', $name)){
-        return "Вторая и последующие буквы должны быть строчными!";
+        return "Допустимы лишь буквы!";
     };
     return '';
 };
@@ -81,17 +72,11 @@ function check_surname($data){
         }
     }
      if ($name == null){
-        return "Поле Фамилия не может быть пустым!";
+        return "Введите фамилию!";
     }
-     if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "В поле Фамилия допустимы лишь буквы";
+    if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
+        return "Допустимы лишь буквы!";
     }   
-    if (!preg_match('/^[А-ЯA-Z][а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "Фамилия должно начинаться с заглавной буквы!";
-    }   
-     if (!preg_match('/^[А-ЯA-Z][а-яa-z]{0,30}+$/u', $name)){
-        return "Вторая и последующие буквы должны быть строчными!";
-    }
     return '';
 }
 ?>
@@ -105,8 +90,8 @@ function check_login($data, $file_data){
         }
     }
     if ($login == null){
-        return "Поле Логин не может быть пустым!";
-    }   
+        return "Введите логин!";
+    }
     foreach ($file_data as $element){
         if (property_exists($element, 'login')){
             if ($element->login == $login){
@@ -128,7 +113,7 @@ function check_password($data){
     } 
     $password_error ="";
     if ($password == null){
-        $password_error = "Поле Пароль не может быть пустым!";
+        $password_error = "Введите пароль!";
     }
    
     return $password_error;

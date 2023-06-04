@@ -1,5 +1,9 @@
+body{
+    font-family: "Geometria-Medium";
+}
+
 html {
-    background: url("../image/fon.jpg") no-repeat center center fixed;
+    background: url("../image/sky.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -7,40 +11,56 @@ html {
     overflow: hidden;
 }
 
+h2{
+    font-size: 40px;
+}
+
+ol{   
+    text-align: left;  
+    list-style-position: inside; 
+}
+
 .link{
-    color: #03dac6;
+    color: #59C7C7;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .error{
-    color: black;
+    color: white;
+    font-weight: bolder;
+    font-size: 30px;
     text-align: center;
-    font-size: 200%;
+    width: 100%;
+    justify-content: center;
+    display: block;
 }
 
 .button {
-    width: 38%;
-    background-color: #4CAF50;
+    width: 30%;
+    background-color: #008E8E;
     color: white;
-    padding: 1% ;
-    border: none;
+    padding: 1%;
+    box-shadow: 5px 5px 20px #005C5C;
     margin: auto;
     display: block;
     border-radius: 10px;
-    font-size: 100%;
+    font-size: 30px;
+    border: none;
+    font-family: "Geometria-Medium";
+    cursor: pointer;
 }
 
 .main{
     width: 70%;    
-    border-radius: 5px;
-    background: rgba(250,60,60,0.47);
+    border-radius: 10px;
+    background: rgba(16,58,158,0.6);
     box-shadow: 1px 1px 50px #000;
     margin: 2% auto ;
     display: block;
-    font-size: 200%;
+    font-size: 30px;
     padding: 1%;
-    color: #ddd;
+    color: white;
     text-align: center;
 }
 
@@ -48,4 +68,9 @@ textarea{
     height: 99%;
     width: 99%;
     font-size: 140%;
+}
+
+@font-face {
+    font-family: "Geometria-Medium";
+    src: url(../fonts/geometria_medium.otf);
 }

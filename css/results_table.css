@@ -1,0 +1,48 @@
+.table {
+    width: 70%;
+    background-color: rgba(16,58,158,0.6);
+    font-size: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 5px auto;
+    display: table;
+    color: white;
+    box-shadow: 1px 1px 50px #000;
+}
+
+th, td {
+  border: 2px solid white;
+}
+
+tr:hover {
+    background-color: rgba(16,58,158,1);
+}
+
+.table tr:last-child td:first-child {
+    border-radius: 0 0 0 10px;
+}
+
+.table tr:last-child td:last-child {
+    border-radius: 0 0 10px 0;
+}
+
+.table  tr th:first-child {
+    border-radius: 10px 0 0 0;
+}
+
+.table  tr th:last-child {
+    border-radius: 0 10px 0 0;
+}
+
+.main{
+    width: 68%;  
+}
+
+.button{
+    width: 16%;
+}
+
+#to_main{
+    margin-right: 40px;
+}
+

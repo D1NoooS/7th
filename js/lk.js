@@ -1,5 +1,4 @@
 var index = 0;
-
 $('document').ready(function () {
     get_info();
     $("#newGame").click(function () {
@@ -9,15 +8,12 @@ $('document').ready(function () {
         logout();
     });
     $("#2_results").click(function () {
-        window.location.replace('../html/rezults_table.html');
+        window.location.replace('../html/results_table.html');
     });
     $("#lk_2_rules").click(function () {
         window.location.assign('../html/rules.html');
     });
 });
-
-
-
 function logout() {
     $.ajax(
             {
@@ -51,7 +47,6 @@ function get_info() {
                 type: "POST",
                 success: function (data) {
                     if (!data["successful"]) {
-                       // window.location.replace('../index.html');
                     } else {
                         let login_html = document.createElement("span");
                         login_html.innerHTML = data["login"];
@@ -59,12 +54,9 @@ function get_info() {
                         let name_html = document.createElement("span");
                         name_html.innerHTML = data["name"];
                         document.getElementById("name_lk").replaceWith(name_html);
-
-                    }
-                    ;
+                    };
                 },
                 error: function () {
-                    // window.location.replace('../index.html');
                 }
             }
     );

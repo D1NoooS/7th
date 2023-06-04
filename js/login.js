@@ -6,15 +6,11 @@ $('document').ready(function () {
     $("#reg_button").click(function () {
         window.location.replace('../html/registration.html');
     });
-    document.getElementById("login").addEventListener("input", function () {
-     //   check_extra("login");
-    });
-    document.getElementById("password").addEventListener("input", function () {
-     //   check_extra("password");
-    });
-     document.addEventListener('keydown', function (event) {
-         if(event.code === 'Enter' ){ check_login();}
-         })
+    document.addEventListener('keydown', function (event) {
+        if(event.code === 'Enter' ){ 
+            check_login();
+        }
+    })
      
 });
 
@@ -25,13 +21,10 @@ function check_extra(id) {
     for (let element of input.value) {
         if (testing.test(element)) {
             result += element;
-        }
-        ;
-    }
-    ;
+        };
+    };
     input.value = result;
-}
-;
+};
 
 function check_login() {
     let login = document.getElementById("login").value;
@@ -63,7 +56,7 @@ function check_login() {
                     }
                 },
                 error: function () {
-                    $('#err_login').html("Ошибка интернет соединения");
+                    $('#err_login').html("Произошла ошибка!");
                     setTimeout(() => {
                         $(`#err_login`).show();
                     }, 1500);

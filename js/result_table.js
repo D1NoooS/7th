@@ -31,21 +31,18 @@ function get_infos() {
                         let name_html = document.createElement("span");
                         name_html.innerHTML = data["name"];
                         document.getElementById("name_lk").replaceWith(name_html);
-                    }
-                    ;
+                    };
                 },
                 error: function () {
-                 //   window.location.replace('login.html');
                 }
             }
     );
-}
-;
+};
 
 function get_info() {
     $.ajax(
             {
-                url: "../php/rezults.php",
+                url: "../php/results.php",
                 dataType: "JSON",
                 type: "POST",
                 success: function (data) {
@@ -53,14 +50,14 @@ function get_info() {
                     login = data["login"];
                     if (all_data.length === 0) {
                         let no_history = document.createElement("span");
-                        no_history.innerHTML = "Еще никто не играл в нашу игру!";
+                        no_history.innerHTML = "Список пока пуст!";
                         document.getElementById("result_table").replaceWith(no_history);
-                    } else {
+                        } else {
                         let table = document.createElement("table");
                         table.setAttribute("class", "table");
                         let  thead = document.createElement("thead");
                         let thead_tr = document.createElement("tr");
-                        let names = ["Место", "Логин", "Максимальное время", "Количество сыгранных игр"];
+                        let names = ["Место", "Логин", "Максимальное время", "Кол-во игр"];
                         for (let i = 0; i < names.length; i++) {
                             let td = document.createElement("th");
                             td.innerHTML = names[i];
@@ -90,13 +87,10 @@ function get_info() {
                         });
                         table.append(tbody);
                         document.getElementById("result_table").replaceWith(table);
-                    }
-                    ;
+                    };
                 },
                 error: function () {
-                    //   window.location.replace('../html/login.html');
                 }
             }
     );
-}
-;
+};

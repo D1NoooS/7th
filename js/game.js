@@ -1,10 +1,10 @@
-let bowl;
+let balloon;
 let t = false;
-let firework;
 let userpoints = 0;
-let drop;
 $('document').ready(function () {
-    drop = new Audio('../sounds/drop.mp3');
+    $("#to_main").click(function () {
+        window.location.replace('../index.html');
+    });
     get_infos();
     $("#starts").click(function () {
         start_game();
@@ -18,57 +18,35 @@ $('document').ready(function () {
     document.addEventListener('keydown', function (event) {
         if (t) {
             if (event.code === 'ArrowDown' || event.code === 'KeyS') {
-                if (bowl['y'] > 1)
-                    get_info(bowl['y'] - 1);
+                if (balloon['y'] > 1)
+                    get_info(balloon['y'] - 1);
             }
             if (event.code === 'ArrowUp' || event.code === 'KeyW') {
-                if (bowl['y'] < 5)
-                    get_info(bowl['y'] + 1);
+                if (balloon['y'] < 5)
+                    get_info(balloon['y'] + 1);
             }
         }
-    });
-    firework = JS_FIREWORKS.Fireworks({
-        id: 'fireworks-canvas',
-        hue: 1200,
-        particleCount: 50,
-        delay: 0,
-        minDelay: 10,
-        maxDelay: 30,
-        boundaries: {// of respawn and target
-            top: 0,
-            bottom: document.documentElement.clientHeight * 0.1,
-            left: 0,
-            right: document.documentElement.clientWidth * 0.2
-        },
-        fireworkSpeed: 1,
-        fireworkAcceleration: 1.05,
-        particleFriction: .95,
-        particleGravity: 1.0
     });
 });
 
 let game;
-let speed = 100;
+let speed = 80;
 let answered = [];
 let lose;
 
 function start_game() {
     clearInterval(lose);
-    $("#timer").css(
-            {
-                "backgroundColor": 'greenyellow'
-            });
     $("#div_game").css(
-            {
-                "backgroundColor": 'pink'
-            });
+        {
+            "backgroundColor": 'rgba(16,58,158,0.6)',
+        });
     if (!t) {
         game = setInterval(() => {
             if (t) {
                 get_info(-1);
             }
         }, speed);
-        document.getElementById("starts").innerHTML = "Игра уже начата!";
+        document.getElementById("starts").innerHTML = "Игра уже идет!";
     }
     t = true;
 }
@@ -84,15 +62,15 @@ function get_info(number) {
                 data: JSON.stringify(data_to_send),
                 success: function (resived_data) {
                     document.getElementById("timer").innerHTML = resived_data["time" ];
-                    document.getElementById("game_question").innerHTML = resived_data["question"];
-                    bowl = resived_data["balloon"];
-                    for (let drop of resived_data['clouds']) {
-                        movedrop(drop);
-                        $("#drop" + drop["y"] + "_number").html(drop["number"]);
+                    document.getElementById("game_aim").innerHTML = resived_data["aim"];
+                    balloon = resived_data["balloon"];
+                    for (let cloud of resived_data['clouds']) {
+                        movecloud(cloud);
+                        $("#cloud" + cloud["y"] + "_number").html(cloud["number"]);
                     }
-                    $("#bowl").animate(
+                    $("#balloon").animate(
                             {
-                                top: ((-resived_data["balloon"]["y"] + 1)* ($("#game").height() + $("#game").height()/10)/ 5 - $("#bowl").height() ).toString(),
+                                top: ((-resived_data["balloon"]["y"] + 1)* ($("#game").height() + $("#game").height()/10)/ 5 - $("#balloon").height() ).toString(),
                                 left: (0).toString()
                             }, 0);
                     userpoints = resived_data["user_points"];
@@ -113,7 +91,6 @@ function get_info(number) {
                                 {
                                     opacity: 0
                                 }, 1000)
-
                         lose = setInterval(() => {
                             $("#message").animate(
                                     {
@@ -128,22 +105,11 @@ function get_info(number) {
                     } else if (resived_data["message"] === "Правильно!") {
                         clearInterval(game);
                         t = false
-                        $("#timer").css(
-                                {
-                                    "backgroundColor": 'greenyellow',
-                                });
-                        firework.start();
-                        setTimeout(() => {
-                            start_game();
-                        }, 6000);
-                        setTimeout(() => {
-                            firework.stop();
-                        }, 6000);
                     }
                 },
                 error: function () {
                     $("#message").show();
-                    document.getElementById("message").innerHTML = "Произошла непредвиденная ошибка! Сообщите о проблеме разработчикам!";
+                    document.getElementById("message").innerHTML = "Произошла ошибка!";
                     setTimeout(() => {
                         $("#message").hide();
                     }, 1500);
@@ -152,27 +118,27 @@ function get_info(number) {
     );
 }
 
-function movedrop(drop) {
-    if (0 < drop["x"] && drop["x"] < 100) {
-        $("#drop" + drop["y"]).fadeIn().animate(
+function movecloud(cloud) {
+    if (0 < cloud["x"] && cloud["x"] < 100) {
+        $("#cloud" + cloud["y"]).fadeIn().animate(
                 {
                     opacity: 100,
-                    left: ((drop["x"]) * $("#game").width() / 100).toString(),
+                    left: ((cloud["x"]) * $("#game").width() / 100).toString(),
                 }, 0).css(
                 {
-                    "background-image": color(drop['color']),
+                    "background-image": color(cloud['color']),
                 });
-    } else if (drop["x"] > 100) {
-        $("#drop" + drop["y"]).animate(
+    } else if (cloud["x"] > 100) {
+        $("#cloud" + cloud["y"]).animate(
                 {
                     opacity: 0,
                 }, 0);
-    } else if (drop["x"] <= 0) {
-        $("#drop" + drop["y"]).animate(
+    } else if (cloud["x"] <= 0) {
+        $("#cloud" + cloud["y"]).animate(
                 {
                     opacity: 0
                 }, 0);
-        $("#drop" + drop["y"]).animate(
+        $("#cloud" + cloud["y"]).animate(
                 {
                     left: ($("#game").width()()).toString()
                 }, 0);
@@ -205,7 +171,6 @@ function get_infos() {
                 data: JSON.stringify(data_to_send),
                 success: function (data) {
                     if (!data["successful"]) {
-                        //    window.location.replace('login.html')
                     } else {
                         let login_html = document.createElement("span");
                         login_html.innerHTML = data["login"];
@@ -214,11 +179,10 @@ function get_infos() {
                     ;
                 },
                 error: function () {
-                    //   window.location.replace('login.html');
                 }
             }
     );
-    $("#bowl").animate(
+    $("#balloon").animate(
             {
                 top: (-3* ($("#game").height()+ $("#game").height()/10)/ 5 ).toString(),
                 left: (0).toString()
