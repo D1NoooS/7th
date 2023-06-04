@@ -1,10 +1,4 @@
 [{
-        "name": "\u041e\u043b\u0435\u0433",
-        "surname": "\u041e\u043b\u0435\u0433\u043e\u0432",
-        "gender": "woman",
-        "login": "2049",
-        "password": "2049"
-    }, {
         "name": "\u041c\u0430\u0442\u0432\u0435\u0439",
         "surname": "\u041a\u0440\u0443\u0442\u043e\u0439",
         "gender": "man",
