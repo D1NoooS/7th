@@ -2,13 +2,9 @@ body{
     font-family: "Geometria-Medium";
 }
 
-html {
-    background: url("../image/sky.png") no-repeat center center fixed;
+html{
+    background: url("../image/sky.png") no-repeat center fixed;
     -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    overflow: hidden;
 }
 
 h2{
@@ -36,7 +32,7 @@ ol{
     display: block;
 }
 
-.button {
+.button{
     width: 30%;
     background-color: #008E8E;
     color: white;
@@ -64,13 +60,7 @@ ol{
     text-align: center;
 }
 
-textarea{
-    height: 99%;
-    width: 99%;
-    font-size: 140%;
-}
-
-@font-face {
+@font-face{
     font-family: "Geometria-Medium";
     src: url(../fonts/geometria_medium.otf);
 }

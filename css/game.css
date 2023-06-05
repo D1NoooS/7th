@@ -27,13 +27,6 @@ div{
     width: 100%;
 }
 
-#head{
-    z-index: 1;
-    position: relative;
-    font-size: 500%;
-    margin: 0.5% auto
-}
-
 .infos{
     display: flex;
     padding: 0%;
@@ -74,7 +67,7 @@ div{
 .element_q1{
     color: #59C7C7;
     height: 150px;
-    width: 150px;
+    width: 250px;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -93,7 +86,9 @@ div{
 
 .cloud{
     font-family: "Geometria-Medium";
-    color: black;
+    color: white;
+    text-shadow: black 0px 0px 20px;
+    font-weight: bolder;
     position: relative;
     background-image: url("../image/cloud.png");
     opacity: 0%;
@@ -126,6 +121,13 @@ div{
     opacity: 0%
 }
 
+#head{
+    z-index: 1;
+    position: relative;
+    font-size: 500%;
+    margin: 0.5% auto
+}
+
 #timer{
     color: #59C7C7;
     height: 150px;
@@ -133,5 +135,15 @@ div{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#user_points{
+    color: white;
+    text-shadow: black 0px 0px 20px;
+    font-weight: bolder;
+    padding-left: 110px;
+    padding-top: 60px;
+    display: block;
+    font-size: 700%;
 }
 

@@ -11,17 +11,14 @@
     if ($surname_err != ""){
         $successful = false;
     }
-   
     $login_error = check_login($data, $file_data);
     if ($login_error != ""){
        $successful = false;
    }
-   
     $password_error = check_password($data);  
     if ($password_error != ""){
         $successful = false;
     }
-   
     if ($successful){
         $current_user = array(
             "name" => $data->name,
@@ -41,81 +38,70 @@
         "successful" => $successful
     );
     echo json_encode($errors);
-?>
 
-<?php
-function check_name($data){
-    setlocale(LC_ALL, "ru_RU.UTF-8");
-    $name = "";
-    if ($data != null){
-        if (property_exists($data, 'name')){
-            $name = $data->name;
-        };
-    };
-    if ($name == null){
-        return "Введите имя!";
-    };
-    if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "Допустимы лишь буквы!";
-    };
-    return '';
-};
-?>
-
-<?php
-function check_surname($data){
-    setlocale(LC_ALL, "ru_RU.UTF-8");
-    $name = "";
-    if ($data != null){
-        if (property_exists($data, 'name')){
-            $name = $data->surname;
-        }
-    }
-     if ($name == null){
-        return "Введите фамилию!";
-    }
-    if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
-        return "Допустимы лишь буквы!";
-    }   
-    return '';
-}
-?>
-
-<?php
-function check_login($data, $file_data){
-    $login = "";
-    if ($data != null){
-        if (property_exists($data, 'login')){
-            $login = $data->login;
-        }
-    }
-    if ($login == null){
-        return "Введите логин!";
-    }
-    foreach ($file_data as $element){
-        if (property_exists($element, 'login')){
-            if ($element->login == $login){
-                return "Пользователь с таким логином уже существует!";
+    function check_name($data){
+        setlocale(LC_ALL, "ru_RU.UTF-8");
+        $name = "";
+        if ($data != null){
+            if (property_exists($data, 'name')){
+                $name = $data->name;
             }
         }
-    }    
-    return '';
-}
-?>
-
-<?php
-function check_password($data){
-    $password = "";
-    if ($data != null){
-        if (property_exists($data, 'password')){
-            $password = $data->password;
+        if ($name == null){
+            return "Введите имя!";
         }
-    } 
-    $password_error ="";
-    if ($password == null){
-        $password_error = "Введите пароль!";
+        if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
+            return "Допустимы лишь буквы!";
+        }
+        return '';
     }
-   
-    return $password_error;
-}
+
+    function check_surname($data){
+        setlocale(LC_ALL, "ru_RU.UTF-8");
+        $name = "";
+        if ($data != null){
+            if (property_exists($data, 'name')){
+                $name = $data->surname;
+            }
+        }
+         if ($name == null){
+            return "Введите фамилию!";
+        }
+        if (!preg_match('/^[а-яА-Яa-zA-Z]{0,30}+$/u', $name)){
+            return "Допустимы лишь буквы!";
+        }   
+        return '';
+    }
+
+    function check_login($data, $file_data){
+        $login = "";
+        if ($data != null){
+            if (property_exists($data, 'login')){
+                $login = $data->login;
+            }
+        }
+        if ($login == null){
+            return "Введите логин!";
+        }
+        foreach ($file_data as $element){
+            if (property_exists($element, 'login') && $element->login == $login){
+                return "Пользователь с таким логином уже существует!";
+            }
+        }    
+        return '';
+    }
+
+    function check_password($data){
+        $password = "";
+        if ($data != null){
+            if (property_exists($data, 'password')){
+                $password = $data->password;
+            }
+        } 
+        $password_error = "";
+        if ($password == null){
+            $password_error = "Введите пароль!";
+        }
+        return $password_error;
+    }
 ?>

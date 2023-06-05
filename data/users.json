@@ -1,7 +1,1 @@
-[{
-        "name": "\u041c\u0430\u0442\u0432\u0435\u0439",
-        "surname": "\u041a\u0440\u0443\u0442\u043e\u0439",
-        "gender": "man",
-        "login": "msch",
-        "password": "msch"
-    }]
+[{"name":"\u041c\u0430\u0442\u0432\u0435\u0439","surname":"\u041a\u0440\u0443\u0442\u043e\u0439","gender":"man","login":"msch","password":"msch"},{"name":"qwe","surname":"qwe","gender":"woman","login":"qwe","password":"qwe"},{"name":"rrr","surname":"rrr","gender":"woman","login":"rrr","password":"rrr"},{"name":"iii","surname":"iii","gender":"woman","login":"iii","password":"iii"}]

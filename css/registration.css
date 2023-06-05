@@ -6,3 +6,11 @@ div{
 #container{
     margin: 4% 20%;
 }
+
+#message{
+    color: white;
+    font-size: 30px;
+    display: block;
+    margin: auto;
+    text-align: center;
+}
