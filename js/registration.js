@@ -37,7 +37,7 @@ function check_registration(){
             replace(errors, 'password_err', 'reg_err_password');
             if (errors['successful']){
                 document.getElementById("message").innerHTML = "Регистрация прошла успешно! <br> Теперь войдите в аккаунт!";
-                setTimeout("window.location.replace('../index.html')", 1500);
+                setTimeout("window.location.replace('login.html')", 1500);
             };
         },
         error: function () {

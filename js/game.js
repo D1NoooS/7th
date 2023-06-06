@@ -32,8 +32,11 @@ let game;
 let speed = 80;
 let k = [];
 let lose;
+var myMusic;
 
 function start_game() {
+    myMusic = new sound("../sounds/bg.mp3");
+    myMusic.play();
     clearInterval(lose);
     $("#div_game").css({
         "backgroundColor": 'rgba(16,58,158,0.6)'
@@ -47,6 +50,21 @@ function start_game() {
         document.getElementById("starts").innerHTML = "Игра уже идет!";
     }
     t = true;
+}
+
+function sound(src) {
+    this.sound = document.createElement("audio");
+    this.sound.src = src;
+    this.sound.setAttribute("preload", "auto");
+    this.sound.setAttribute("controls", "none");
+    this.sound.style.display = "none";
+    document.body.appendChild(this.sound);
+    this.play = function(){
+        this.sound.play();
+    };
+    this.stop = function(){
+        this.sound.pause();
+    };   
 }
 
 function get_info(number) {
@@ -72,6 +90,7 @@ function get_info(number) {
             }, 0);
             userpoints = resived_data["user_points"];
             if (resived_data["message"] === "Конец") {
+                myMusic.stop();
                 clearInterval(game);
                 t = false;
                 document.getElementById("starts").innerHTML = "Начать заново!";
@@ -98,13 +117,7 @@ function get_info(number) {
                 t = false;
             }
         },
-        error: function() {
-            $("#message").show();
-            document.getElementById("message").innerHTML = "Произошла ошибка!";
-            setTimeout(() => {
-                $("#message").hide();
-            }, 1500);
-        }
+        error: function() {}
     });
 }
 
