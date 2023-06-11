@@ -111,7 +111,7 @@ div{
     font-size: 200%
 }
 
-.message{
+#message{
     white-space: nowrap;
     padding: 0% 43%;
     font-size: 800%;
@@ -125,7 +125,7 @@ div{
     z-index: 1;
     position: relative;
     font-size: 500%;
-    margin: 0.5% auto
+    margin: 0.5% auto;
 }
 
 #timer{

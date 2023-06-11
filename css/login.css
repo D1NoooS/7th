@@ -50,6 +50,7 @@ select{
 }
 
 #message{
+    font-weight: bolder;
     color: white;
     font-size: 30px;
     display: block;

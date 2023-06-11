@@ -6,7 +6,7 @@ $("document").ready(function() {
         window.location.replace('../html/registration.html');
     });
     document.addEventListener('keydown', function(event) {
-        if(event.code === 'Enter'){ 
+        if (event.code === 'Enter') { 
             check_login();
         }
     });
@@ -26,6 +26,7 @@ function check_login() {
         data: JSON.stringify(login_data),
         success: function(errors) {
             if (errors['successful']) {
+                $('div').css({'min-height': '+=50px'});
                 document.getElementById("message").innerHTML = "Авторизация прошла успешно!";
                 setTimeout("window.location.replace('../html/lk.html')", 1500);
             } else {
@@ -34,17 +35,22 @@ function check_login() {
                 } else {
                     $('#err_login').html(errors['password_err']);
                 }
+                $('div').css({'min-height': '+=50px'});
                 $('#err_login').show();
                 setTimeout(() => {
                     $('#err_login').hide();
+                    $('div').css({'min-height': '330px'});
                 }, 1500);
             }
         },
-        error: function () {
+        error: function() {
+            $('div').css({'min-height': '+=50px'});
             $('#err_login').html("Произошла ошибка!");
+            $(`#err_login`).show();
             setTimeout(() => {
-                $(`#err_login`).show();
-            }, 1500);
+                $('#err_login').hide();
+                $('div').css({'min-height': '330px'});
+            }, 3000);
         }
     });
 }

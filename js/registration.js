@@ -36,16 +36,18 @@ function check_registration(){
             replace(errors, 'login_err', 'reg_err_login');
             replace(errors, 'password_err', 'reg_err_password');
             if (errors['successful']){
+                $('div').css({'min-height': '+=85px'});
                 document.getElementById("message").innerHTML = "Регистрация прошла успешно! <br> Теперь войдите в аккаунт!";
-                setTimeout("window.location.replace('login.html')", 1500);
+                setTimeout("window.location.replace('login.html')", 2000);
             };
         },
         error: function () {
-            var msg = 'Прооизошла ошибка!';
-            $("#message").show();
-            document.getElementById("message").innerHTML = msg;
+            $('div').css({'min-height': '+=47px'});
+            $('#err_login').html("Произошла ошибка!");
+            $(`#err_login`).show();
             setTimeout(() => {
-                $("#message").hide();
+                $('#err_login').hide();
+                $('div').css({'min-height': '520px'});
             }, 3000);
         }
     });
@@ -55,9 +57,11 @@ function replace(data, field_id, span_id){
     let log_err = document.getElementById(span_id);
     if (data[field_id] !== ""){
         log_err.innerHTML = data[field_id];
+        $('div').css({'min-height': '+=47px'});
         $(`#${span_id}`).show();
         setTimeout(() => {
             $(`#${span_id}`).hide();
+            $('div').css({'min-height': '520px'});
         }, 2500);
     };
 }
