@@ -10,13 +10,20 @@
     $aim;
     $game_continue;
     $speed;
-    $user_points;
+    $num_cloud;
     $message = "";
     $games_count = 0;
     $login = "";
     $password = "";
+    $cloud_count = 0;
+    $k_task;
+    $life_count;
+        
     if (array_key_exists('login', $_SESSION)) {
         $login = $_SESSION['login'];
+    }
+    if (array_key_exists('life_count', $_SESSION)) {
+        $life_count = $_SESSION['life_count'];
     }
     if (array_key_exists('password', $_SESSION)) {
         $password = $_SESSION['password'];
@@ -26,6 +33,9 @@
     }
     if (array_key_exists('aim', $_SESSION)) {
         $aim = $_SESSION["aim"];
+    }
+    if (array_key_exists('k_task', $_SESSION)) {
+        $k_task = $_SESSION["k_task"];
     }
     if (array_key_exists('clouds', $_SESSION)) {
         $clouds = $_SESSION["clouds"];
@@ -39,8 +49,8 @@
     if (array_key_exists('speed', $_SESSION)) {
         $speed = $_SESSION["speed"];
     }
-    if (array_key_exists('user_points', $_SESSION)) {
-        $user_points = $_SESSION["user_points"];
+    if (array_key_exists('num_cloud', $_SESSION)) {
+        $num_cloud = $_SESSION["num_cloud"];
     }
     if (array_key_exists('balloon', $_SESSION)) {
         $balloon = $_SESSION["balloon"];
@@ -48,59 +58,75 @@
     if ($data->k != -1) {
         $balloon["y"] = $data->k;
     }
+    
     $other_users = [];
     $file_datas = json_decode(file_get_contents("../data/stats.json"), true);
+    
     foreach ($file_datas as $element) {
         if ($element["login"] == $login) {
             $max_time = $element["max_time"];
             $games_count = $element["games_count"];
+            $cloud_count = $element["cloud_count"];
+            $max_cloud_count = $element["max_cloud_count"];
         } else {
             array_push($other_users, $element);
         }
     }
+    
     $time2 = ((date('h') * 3600) + (date('i') * 60) + date('s'));
+    
     if ($from_begin) {
+        
         $time1 = ((date('h') * 3600) + (date('i') * 60) + date('s'));
         generation();
-        $user_points = 0;
         $from_begin = false;
         $games_count++;
-    } else {
+        $cloud_count = 0;
+        $k_task = rand(1, 3);
+        $life_count = 3;
+    } 
+    else {
         if (($time2 - $time1) > $max_time) {
             $max_time = ($time2 - $time1);
         }
-        $user_points = check();
+        if ($cloud_count > $max_cloud_count) {
+            $max_cloud_count = $cloud_count;
+        }  
+        $num_cloud = check();
         if ($data->k == -1) {
             $clouds = generate(true)['clouds'];
-        }
-        if ($user_points <= $aim && $user_points != -1000) {
-            $message = "Конец";
-            $from_begin = true;
-        }
+        }        
         echo json_encode([
                 "time" => ($time2 - $time1),
                 "aim" => $aim,
                 "clouds" => $clouds,
                 "message" => $message,
                 "balloon" => $balloon,
-                "user_points" => $user_points
+                "num_cloud" => $num_cloud,
+                "k_task" => $k_task,
+                "life_count" => $life_count
             ]
         );
-
     }
+    
+
     $_SESSION["time2"] = $time2;
     $_SESSION["time1"] = $time1;
     $_SESSION["aim"] = $aim;
+    $_SESSION["k_task"] = $k_task;
+    $_SESSION["life_count"] = $life_count;
     $_SESSION["clouds"] = $clouds;
     $_SESSION["from_begin"] = $from_begin;
     $_SESSION["game_continue"] = $game_continue;
     $_SESSION["speed"] = $speed;
-    $_SESSION["user_points"] = $user_points;
+    $_SESSION["num_cloud"] = $num_cloud;
     $_SESSION["balloon"] = $balloon;
     $statistics_data = [
         "login" => $login,
         "games_count" => $games_count,
-        "max_time" => $max_time
+        "max_time" => $max_time,
+        "cloud_count" => $cloud_count,
+        "max_cloud_count" => $max_cloud_count
     ];
     array_push($other_users, $statistics_data);
     usort($other_users, function ($a, $b) {
@@ -109,17 +135,93 @@
     file_put_contents("../data/stats.json", json_encode(($other_users)));
 
     function check() {
-        global $clouds, $balloon;
-        if ($clouds[$balloon["y"] - 1]["x"] <= 0 ) {
-            return $clouds[$balloon["y"] - 1]["number"];
+        global $clouds, $balloon, $aim, $cloud_count, $message, $from_begin, $k_task,
+               $life_count;
+        
+        if ($k_task === 1) { // >
+            if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
+                if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
+                    $cloud_count++;
+                } 
+                if ($life_count === 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) <= $aim) {
+                        $message = "Конец";
+                        $from_begin = true;
+                        $life_count = 0;
+                    }
+                }
+                else if ($life_count > 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) <= $aim) {
+                        $life_count--;
+                    }
+                }
+                $aim = rand(-8, 8);
+                $k_task = rand(1, 3);
+                return $clouds[$balloon["y"] - 1]["number"];
+            }
         }
-        return -1000;
+        else if ($k_task === 2) { // <
+            if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
+                if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
+                    $cloud_count++;
+                } 
+                if ($life_count === 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) >= $aim) {
+                        $message = "Конец";
+                        $from_begin = true;
+                        $life_count = 0;
+                    }
+                }
+                else if ($life_count > 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) >= $aim) {
+                        $life_count--;
+                    }
+                }
+                $aim = rand(-8, 8);
+                $k_task = rand(1, 3);
+                return $clouds[$balloon["y"] - 1]["number"];
+            }
+        }
+        else if ($k_task === 3) { // =
+            if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
+                if (($clouds[$balloon["y"] - 1]["number"]) === $aim) {
+                    $cloud_count++;
+                } 
+                if ($life_count === 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
+                        $message = "Конец";
+                        $from_begin = true;
+                        $life_count = 0;
+                    }
+                    else if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
+                        $message = "Конец";
+                        $from_begin = true;
+                        $life_count = 0;
+                    } 
+                }
+                else if ($life_count > 1) {
+                    if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
+                        $life_count--;
+                    }
+                    else if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
+                        $life_count--;
+                    } 
+                }
+                $aim = rand(-8, 8);
+                $k_task = rand(1, 3);
+                return $clouds[$balloon["y"] - 1]["number"];
+            }
+        }
+        return null;
     }
 
     function generation($move = false) {
-        global $time2, $time1, $message, $aim, $clouds, $balloon, $user_points;
+        global $time2, $time1, $message, $aim, $clouds, $balloon, $num_cloud, $k_task,
+               $life_count;
         $temp = generate($move);
         $aim = $temp["aim"];
+        $k_task = $temp["k_task"];
+        $life_count = $temp["life_count"];
         $clouds = $temp["clouds"];
         echo json_encode(
                 [
@@ -127,17 +229,22 @@
                     "aim" => $aim,
                     "clouds" => $clouds,
                     "baloon" => $balloon,
-                    "user_points" => $user_points,
-                    "message" => $message
+                    "num_cloud" => $num_cloud,
+                    "message" => $message,
+                    "k_task" => $k_task,
+                    "life_count" => $life_count
                 ]
         );
     }
 
     function generate($move) {
-        global $aim;
+        global $aim, $k_task, $life_count;
         $first = rand(-8,8);
+        $second = rand(1,3);
         if (!$move) {
             $aim = $first;
+            $life_count = 3;
+            $k_task = $second;
         }
         $clouds_ = [];
         for ($i = 1; $i <= 5; $i++) {
@@ -146,7 +253,9 @@
         }
         return [
             "aim" => $aim,
-            "clouds" => $clouds_
+            "clouds" => $clouds_,
+            "k_task" => $k_task,
+            "life_count" => $life_count
         ];
     }
 
@@ -172,4 +281,3 @@
             "color" => rand(1, 7)
         ];
     }
-?>

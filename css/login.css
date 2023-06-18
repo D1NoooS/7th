@@ -5,6 +5,7 @@ div{
 
 h1{
     text-align: center;
+    text-shadow: black 1px 0 10px;
     font-size: 40px;
     color: white;
 }
@@ -19,7 +20,7 @@ a,select,input{
     padding: 8px;
     border-radius: 10px;
     border: none;
-    background: rgba(5,35,103,0.2);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 select{
@@ -31,10 +32,10 @@ select{
 
 .buttonL{
   text-align: center;
-  background: #008E8E;
+  background: linear-gradient(to bottom, rgba(254, 39, 18, 0.9), rgba(193, 20, 20, 0.9)); 
   width: 80%;
   border-radius: 10px;
-  box-shadow: 5px 5px 20px #005C5C;
+  /*box-shadow: 3px 3px 10px white;*/
   font-size: 30px;
   color: white;
   cursor: pointer;
@@ -44,13 +45,14 @@ select{
     margin: 10% 20%;
     width: auto;
     border-radius: 10px;
-    background: rgba(16,58,158,0.6);
+    background: linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9));
     box-shadow: 1px 1px 50px #000;
     display: block;
 }
 
 #message{
     font-weight: bolder;
+    text-shadow: black 1px 0 10px;
     color: white;
     font-size: 30px;
     display: block;

@@ -11,7 +11,7 @@
     $login = "";
     $password = "";
     $speed = 2;
-    $user_points = 0;
+    $num_cloud = 0;
     $balloon = ["x" => 0, "y" => 3];
     if (array_key_exists('login', $_SESSION)) {
         $login = $_SESSION['login'];
@@ -42,7 +42,7 @@
         $_SESSION["from_begin"] = $from_begin;
         $_SESSION["game_continue"] = $game_continue;
         $_SESSION["speed"] = $speed;
-        $_SESSION["user_points"] = $user_points;
+        $_SESSION["num_cloud"] = $num_cloud;
         $_SESSION["balloon"] = $balloon;
         echo json_encode([
             "successful" => true,

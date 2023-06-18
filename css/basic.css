@@ -1,13 +1,16 @@
 body{
     font-family: "Geometria-Medium";
+    text-shadow: black 1px 0 10px;
 }
 
 html{
-    background: url("../image/sky.png") no-repeat center fixed;
+    background: url("../image/bg_balloons.jpg") no-repeat center fixed;
     -webkit-background-size: cover;
+    background-size: 100%;
 }
 
 h2{
+    text-shadow: black 1px 0 10px;
     font-size: 40px;
 }
 
@@ -17,13 +20,14 @@ ol{
 }
 
 .link{
-    color: #59C7C7;
+    color: yellow;
     text-decoration: underline;
     cursor: pointer;
 }
 
 .error{
     color: white;
+    text-shadow: black 1px 0 10px;
     font-weight: bolder;
     font-size: 30px;
     text-align: center;
@@ -34,10 +38,10 @@ ol{
 
 .button{
     width: 30%;
-    background-color: #008E8E;
+    background: linear-gradient(to bottom, rgba(254, 39, 18, 0.9), rgba(193, 20, 20, 0.9)); 
     color: white;
     padding: 1%;
-    box-shadow: 5px 5px 20px #005C5C;
+    /*box-shadow: 5px 5px 20px #005C5C;*/
     margin: auto;
     display: block;
     border-radius: 10px;
@@ -50,7 +54,7 @@ ol{
 .main{
     width: 70%;    
     border-radius: 10px;
-    background: rgba(16,58,158,0.6);
+    background: linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9));
     box-shadow: 1px 1px 50px #000;
     margin: 2% auto ;
     display: block;

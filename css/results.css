@@ -2,7 +2,7 @@ div{
     width: 68%;    
     font-weight: bolder;
     border-radius: 10px;
-    background: rgba(16,58,158,0.6);
+    background: linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9));
     box-shadow: 1px 1px 50px #000;
     margin: 2% auto ;
     display: block;
@@ -17,7 +17,7 @@ th, td {
 }
 
 tr:hover {
-    background-color: rgba(16,58,158,1);
+    background-color: rgba(255, 255, 255, 0.9);
 }
 
 .main{
@@ -30,7 +30,7 @@ tr:hover {
 
 .table {
     width: 70%;
-    background-color: rgba(16,58,158,0.6);
+    background: linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9));
     font-size: 30px;
     border-radius: 10px;
     text-align: center;
@@ -55,6 +55,14 @@ tr:hover {
 .table  tr th:last-child {
     border-radius: 0 10px 0 0;
 }
+
+#corona {
+    margin-top: 10px;
+    margin-bottom: -20px;
+    height: 100px;
+    width: auto;
+}
+
 
 #to_main{
     margin-right: 40px;

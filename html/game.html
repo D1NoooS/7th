@@ -8,27 +8,42 @@
         <script type="text/javascript" src="../js/game.js"></script>
     </head>
     <body>
+        
         <header class="main" id="head">
-            <span class="link" id="to_main">Выйти</span>
-            <span class="link" id="2_lk">Личный кабинет</span>
+            <div id="div_back">
+                <img src="../image/back.png" alt="" id="back">
+            </div>
+<!--            <span class="link" id="2_lk">Личный кабинет</span>
             <span id="right_login"> 
                 Пользователь: <span id="login_lk"></span> 
                 <br>
-            </span>
-            <button class="button" id="starts">
-                Играть
-            </button> 
+            </span>-->
+            <button class="button" id="starts">Играть</button> 
         </header>
         <div>
-            <span id="message"></span>
+            <div id="div_gameover">
+                <img src="../image/game_over.png" alt="" id="gameover">
+            </div>  
             <div class="game" id="div_game">
                 <div class="infos" >
-                    <span class="info">Собирайте облака с цифрами</span>
-                    <div id="game_aim" class="element_q1">0</div>   
-                    <span class="info">Время</span>
+                    <span class="info">Условие: </span>
+                    <div id="game_aim" class="element_q1">0</div>
+                    <div class="lifes">
+                        <div class="div_heart"> 
+                            <img src="../image/heart.png" alt="" id="heart1" class="heart"> 
+                            <img src="../image/heart.png" alt="" id="heart2" class="heart"> 
+                            <img src="../image/heart.png" alt="" id="heart3" class="heart">
+                        </div>
+                    </div>
+                    <span class="info">Время: </span>
                     <span class="info">
                         <label id="timer">0</label>                         
-                    </span>                
+                    </span>
+                    <span class="info">Уровень: </span>
+                    <span class="info">
+                        <label id="cloud_count">0</label>
+                    </span>
+                    
                 </div>             
                 <div class="div_game" id="game">
                     <div class="elements_game">
@@ -38,7 +53,7 @@
                         <div id="cloud2" class="cloud"><span id="cloud2_number" class="infs"></span></div>
                         <div id="cloud1" class="cloud"><span id="cloud1_number" class="infs"></span></div>
                     </div>
-                    <div id="balloon" class="balloon"><span id="user_points"></span></div>
+                    <div id="balloon" class="balloon"><span id="aim"></span></div>
                 </div>           
             </div>
         </div>
