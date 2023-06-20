@@ -1,10 +1,10 @@
 let balloon;
 let t = false;
 let num_cloud = 0;
-
+let firework;
 
 $('document').ready(function(){
-    get_infos();
+    get_infos(); 
     $("#starts").click(function() {
         start_game();
     });
@@ -17,12 +17,16 @@ $('document').ready(function(){
     $("#gameover").animate({
         opacity: 0
     }, 0);
-    $('.div_heart').css({'margin': '0 0 10px -40px'});
-    document.addEventListener('keydown', function(event) {
-        if (event.code === 'Enter') { 
-            start_game();
-        }
-    });
+    $("#trash").animate({
+        opacity: 0
+    }, 0);
+    $("#lid").animate({
+        opacity: 0
+    }, 0);
+    $('.div_heart').css({'margin': '0 0 10px -120px'}); 
+    $('#game_aim').css({'justify-content': 'start'});
+    $('#timer').css({'justify-content': 'start'});
+    
     document.addEventListener('keydown', function(event) {
         if (t) {
             if (event.code === 'ArrowDown' || event.code === 'KeyS') {
@@ -36,15 +40,47 @@ $('document').ready(function(){
             }   
         }
     });
+    
+    firework = JS_FIREWORKS.Fireworks({
+        id: 'fireworks-canvas',
+        hue: 360,
+        particleCount: 200,
+        delay: 0,
+        minDelay: 10,
+        maxDelay: 30,
+        boundaries: {// of respawn and target
+            top: 0,
+            bottom: document.documentElement.clientHeight * 0.1,
+            left: 0,
+            right: document.documentElement.clientWidth * 0.2
+        },
+        fireworkSpeed: 2,
+        fireworkAcceleration: 1.05,
+        particleFriction: .95,
+        particleGravity: 1.0
+    });
 });
 
-let speed = 60;
+let speed = 50;
 let game;
 let lose;
 let k = [];
 var myMusic;
+var wasted;         
 
 function start_game() {
+    $('.main').css({"background" : "linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9))"}); 
+    $('html').css({"background" : "url('../image/bg_balloons.jpg') no-repeat center fixed"});
+    $('html').css({"background-size" : "100%"});
+    $("#trash").animate({
+        opacity: 0
+    }, 0);
+    $("#lid").animate({
+        opacity: 0
+    }, 0);
+    $("#span_aim").fadeIn(0);
+    $("#game_aim").fadeIn(0);
+    $('#starts').prop('disabled', true);
     $('#balloon').animate({
         opacity: 100
     }, 0);
@@ -58,25 +94,24 @@ function start_game() {
     $('.main').css({'width' : '16%'});
     $('#div_back').css({'margin-left' : '-2800px'});
     
-    $("#heart1").fadeIn().animate({
+    $("#heart1").fadeIn(0).animate({
         opacity: 100
     }, 0);
-    $("#heart2").fadeIn().animate({
+    $("#heart2").fadeIn(0).animate({
         opacity: 100
     }, 0);
-    $("#heart3").fadeIn().animate({
+    $("#heart3").fadeIn(0).animate({
         opacity: 100
     }, 0);
     $("#gameover").animate({
         opacity: 0
     }, 0);
     $('.div_heart').css({'margin': '0 0 10px 20px'});
-    myMusic = new sound("../sounds/bg.mp3");
+    myMusic = new sound("../sounds/bg2.mp3", 0.4);
+    
     myMusic.play();
     clearInterval(lose);
-    $("#div_game").css({
-        "background": 'linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9)'
-    });
+    $("#div_game").css({"background": 'linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9)'});
     if (!t) {
         game = setInterval(() => {
             if (t) {
@@ -88,12 +123,13 @@ function start_game() {
     t = true;
 }
 
-function sound(src) {
+function sound(src, volume) {
     this.sound = document.createElement("audio");
     this.sound.src = src;
     this.sound.setAttribute("preload", "auto");
     this.sound.setAttribute("controls", "none");
     this.sound.style.display = "none";
+    this.sound.volume = volume;
     document.body.appendChild(this.sound);
     this.play = function(){
         this.sound.play();
@@ -117,21 +153,115 @@ function get_info(number) {
             document.getElementById("timer").innerHTML = resived_data["time"];
             k_task = resived_data["k_task"];
             life_count = resived_data["life_count"];
-            console.log(life_count);
-            if (life_count === 2) {
+            animate = resived_data["animate"];
+
+            if (animate === 1) {
+                $('.game').css({'background': 'linear-gradient(to bottom, rgba(255, 212, 0), rgba(255, 234, 97))'});
+                nice = new sound("../sounds/lets_go.mp3", 1);
+                nice.play();
+                
+                firework.start();
+                setTimeout(() => {
+                    firework.stop();
+                }, 1500);
+                
+                
+                if (life_count > 0) {
+                    setTimeout(function(){
+                        $('.game').css({'background': 'linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9))'});
+                        console.log("после");
+                    }, 700);   
+                }
+            }
+            else if (animate === -1) {
+                $('.game').css({'background': 'linear-gradient(to bottom, rgba(254, 39, 18, 0.9), rgba(193, 20, 20, 0.9))'});
+                ugh = new sound("../sounds/ugh.mp3", 1);
+                ugh.play();
+                if (life_count > 0) {
+                    setTimeout(function(){
+                        $('.game').css({'background': 'linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9))'});
+                        console.log("после");
+                    }, 700); 
+                }
+                  
+            }
+
+            if (life_count === 2 && animate === -1) {
+                $("#trash").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    left: "-=400px"
+                }, 250);
+                $("#heart3").animate({
+                    left: "-=2600px"
+                }, 200);
+                $("#heart3").animate({
+                    top: "+=1550px"
+                }, 200);
                 $("#heart3").animate({
                     opacity: 0
-                }, 0);
+                }, 200);
+                $("#lid").animate({
+                    left: "+=400px"
+                }, 400);
+                
+                setTimeout(function(){
+                    $("#trash").animate({
+                        opacity: 0
+                    }, 500);
+                }, 750);
+                $("#lid").animate({
+                    opacity: 0
+                }, 500);
             }
-            if (life_count === 1) {
+            if (life_count === 1 && animate === -1) {
+                $("#trash").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    left: "-=400px"
+                }, 250);
                 $("#heart3").animate({
                     opacity: 0
                 }, 0);
                 $("#heart2").animate({
+                    left: "-=2440px"
+                }, 200);
+                $("#heart2").animate({
+                    top: "+=1550px"
+                }, 200);
+                $("#heart2").animate({
                     opacity: 0
-                }, 0);
+                }, 200);
+                $("#lid").animate({
+                    left: "+=400px"
+                }, 400);
+                setTimeout(function(){
+                    $("#trash").animate({
+                        opacity: 0
+                    }, 500);
+                }, 750);
+                $("#lid").animate({
+                    opacity: 0
+                }, 500);
             }
-            if (life_count === 0) {
+            if (life_count === 0 && animate === -1) {
+                $("#trash").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    opacity: 100
+                }, 100);
+                $("#lid").animate({
+                    left: "-=400px"
+                }, 250);
                 $("#heart3").animate({
                     opacity: 0
                 }, 0);
@@ -139,13 +269,28 @@ function get_info(number) {
                     opacity: 0
                 }, 0);
                 $("#heart1").animate({
+                    left: "-=1650px"
+                }, 200);
+                $("#heart1").animate({
+                    top: "+=1550px"
+                }, 200);
+                $("#heart1").animate({
                     opacity: 0
-                }, 0);
-//                $("#gameover").fadeIn().animate({
-//                    opacity: 100
-//                }, 0);
+                }, 200);
+                $("#lid").animate({
+                    left: "+=400px"
+                }, 400);
+                setTimeout(function(){
+                    $("#trash").animate({
+                        opacity: 0
+                    }, 100);
+                }, 750);
+                $("#lid").animate({
+                    opacity: 0
+                }, 100);
                 $('.div_heart').css({'margin-left': '-475px'});
             }
+
             if (k_task === 1) {
                 document.getElementById("game_aim").innerHTML = ">" + resived_data["aim"];
                 document.getElementById("aim").innerHTML = ">" + resived_data["aim"];   
@@ -170,7 +315,6 @@ function get_info(number) {
             }, 0);
             num_cloud = resived_data["num_cloud"];
             if (num_cloud !== null) {
-                console.log(speed);
                 clearInterval(game);
                 speed += -3;
                 game = setInterval(() => {
@@ -181,8 +325,45 @@ function get_info(number) {
                 t = true;
             }
             if (resived_data["message"] === "Конец") {
-                $('.div_game').css({'background-image': 'url("../image/game_over.png")'});
-                $('.div_game').css({'background-size': '100%'});
+                wasted = new sound("../sounds/wasted.mp3", 1);
+                wasted.play();
+                
+                $("#heart3").animate({
+                    left: "+=2600px"
+                }, 0);
+                $("#heart3").animate({
+                    top: "-=1550px"
+                }, 0);
+                
+                $("#heart2").animate({
+                    left: "+=2440px"
+                }, 0);
+                $("#heart2").animate({
+                    top: "-=1550px"
+                }, 0);
+                
+                $("#heart1").animate({
+                    left: "+=1650px"
+                }, 0);
+                $("#heart1").animate({
+                    top: "-=1550px"
+                }, 0);
+                
+                $("#span_aim").fadeOut(0);
+                $("#game_aim").fadeOut(0);
+                
+                $('#starts').prop('disabled', true);
+                $('.div_game').css({'background-image': 'none'});
+                $('html').css({"background":"url('../image/rain2.gif') left center"});
+                $('html').css({"background-size":"100%"});
+                $('.game').css({'background': 'rgba(128, 128, 128, 0.1)'});
+                $('.main').css({"background" : "rgba(128, 128, 128, 0.1)"}); 
+                setTimeout(function(){
+                    $('.div_game').css({'background-image': 'url("../image/game_over.png")'});
+                    $('.div_game').css({'background-size': '100%'});
+                    $('#starts').prop('disabled', false);
+                }, 2300);
+                
                 $('#balloon').animate({
                     opacity: 0
                 }, 0);
@@ -192,25 +373,12 @@ function get_info(number) {
                 myMusic.stop();
                 clearInterval(game);
                 t = false;
-                speed = 60;
+                speed = 50;
                 document.getElementById("starts").innerHTML = "Начать заново!";
-                $("#div_game").css({
-                    "background": 'red'
+                
+                $("#starts").click(function() {
+                    wasted.stop();
                 });
-//                $("#gameover").animate({
-//                    opacity: 100
-//                }, 1500);
-//                $("#gameover").animate({
-//                    opacity: 0
-//                }, 1500);
-//                lose = setInterval(() => {
-//                    $("#gameover").animate({
-//                        opacity: 100
-//                    }, 1000);
-//                    $("#gameover").animate({
-//                        opacity: 0
-//                    }, 1000);
-//                }, 2000);
             }
         },
         error: function() {}

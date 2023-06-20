@@ -61,7 +61,7 @@ div{
     /*    width: 2800px;*/
     width: 3500px;
     z-index: 1;
-    position: relative
+    position: relative;
 }
 
 .game{
@@ -69,7 +69,7 @@ div{
     background: linear-gradient(to bottom, rgba(254, 90, 28, 0.9), rgba(255, 225, 52, 0.9));
     border-radius: 40px;
     display: block;
-    margin: -150px auto 0 auto;
+    margin: 20px auto 0 auto;
 /*    margin: 0 auto;*/
 /*    width: 3300px;*/
     width: 4000px;
@@ -122,7 +122,27 @@ div{
 
 .info{
     padding: 0px 20px;
-    font-size: 200%
+    font-size: 220%
+}
+
+#heart1, #heart2, #heart3{
+    position: relative;
+}
+
+#trash{
+    margin-top: -1600px;
+    margin-left: 400px;
+}
+
+#trash{
+    margin-top: -1600px;
+    margin-left: 400px;
+}
+
+#lid{
+    margin-top: -1700px;
+    margin-left: 440px;
+    position: relative;
 }
 
 #div_back{
@@ -137,13 +157,6 @@ div{
     height: auto;
 }
 
-#gameover{
-    height: 150px;
-    width: 500px;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 20px;
-}
 
 #message{
     white-space: nowrap;
@@ -167,7 +180,6 @@ div{
     color: yellow;
     height: 150px;
     width: 150px;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -196,4 +208,18 @@ div{
     font-size: 800%;
 }
 
+canvas{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    margin-top: 0.5vh;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    border-radius: 50px;
+    pointer-events: none;
+}
 

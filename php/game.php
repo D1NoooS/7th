@@ -18,9 +18,13 @@
     $cloud_count = 0;
     $k_task;
     $life_count;
+    $animate = 0;
         
     if (array_key_exists('login', $_SESSION)) {
         $login = $_SESSION['login'];
+    }
+    if (array_key_exists('animate', $_SESSION)) {
+        $animate = $_SESSION['animate'];
     }
     if (array_key_exists('life_count', $_SESSION)) {
         $life_count = $_SESSION['life_count'];
@@ -68,6 +72,7 @@
             $games_count = $element["games_count"];
             $cloud_count = $element["cloud_count"];
             $max_cloud_count = $element["max_cloud_count"];
+            
         } else {
             array_push($other_users, $element);
         }
@@ -84,6 +89,7 @@
         $cloud_count = 0;
         $k_task = rand(1, 3);
         $life_count = 3;
+        $animate = 0;
     } 
     else {
         if (($time2 - $time1) > $max_time) {
@@ -104,9 +110,11 @@
                 "balloon" => $balloon,
                 "num_cloud" => $num_cloud,
                 "k_task" => $k_task,
-                "life_count" => $life_count
+                "life_count" => $life_count,
+                "animate" => $animate
             ]
         );
+        $animate = 0;
     }
     
 
@@ -115,6 +123,7 @@
     $_SESSION["aim"] = $aim;
     $_SESSION["k_task"] = $k_task;
     $_SESSION["life_count"] = $life_count;
+    $_SESSION["animate"] = $animate;
     $_SESSION["clouds"] = $clouds;
     $_SESSION["from_begin"] = $from_begin;
     $_SESSION["game_continue"] = $game_continue;
@@ -136,23 +145,26 @@
 
     function check() {
         global $clouds, $balloon, $aim, $cloud_count, $message, $from_begin, $k_task,
-               $life_count;
+               $life_count, $animate;
         
         if ($k_task === 1) { // >
             if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
                 if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
                     $cloud_count++;
+                    $animate = 1;
                 } 
                 if ($life_count === 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) <= $aim) {
                         $message = "Конец";
                         $from_begin = true;
                         $life_count = 0;
+                        $animate = -1;
                     }
                 }
                 else if ($life_count > 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) <= $aim) {
                         $life_count--;
+                        $animate = -1;
                     }
                 }
                 $aim = rand(-8, 8);
@@ -164,17 +176,20 @@
             if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
                 if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
                     $cloud_count++;
+                    $animate = 1;
                 } 
                 if ($life_count === 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) >= $aim) {
                         $message = "Конец";
                         $from_begin = true;
                         $life_count = 0;
+                        $animate = -1;
                     }
                 }
                 else if ($life_count > 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) >= $aim) {
                         $life_count--;
+                        $animate = -1;
                     }
                 }
                 $aim = rand(-8, 8);
@@ -186,25 +201,30 @@
             if ($clouds[$balloon["y"] - 1]["x"] <= 0) {
                 if (($clouds[$balloon["y"] - 1]["number"]) === $aim) {
                     $cloud_count++;
+                    $animate = 1;
                 } 
                 if ($life_count === 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
                         $message = "Конец";
                         $from_begin = true;
                         $life_count = 0;
+                        $animate = -1;
                     }
                     else if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
                         $message = "Конец";
                         $from_begin = true;
                         $life_count = 0;
+                        $animate = -1;
                     } 
                 }
                 else if ($life_count > 1) {
                     if (($clouds[$balloon["y"] - 1]["number"]) > $aim) {
                         $life_count--;
+                        $animate = -1;
                     }
                     else if (($clouds[$balloon["y"] - 1]["number"]) < $aim) {
                         $life_count--;
+                        $animate = -1;
                     } 
                 }
                 $aim = rand(-8, 8);
@@ -217,11 +237,12 @@
 
     function generation($move = false) {
         global $time2, $time1, $message, $aim, $clouds, $balloon, $num_cloud, $k_task,
-               $life_count;
+               $life_count, $animate;
         $temp = generate($move);
         $aim = $temp["aim"];
         $k_task = $temp["k_task"];
         $life_count = $temp["life_count"];
+        $animate = $temp["animate"];
         $clouds = $temp["clouds"];
         echo json_encode(
                 [
@@ -232,18 +253,20 @@
                     "num_cloud" => $num_cloud,
                     "message" => $message,
                     "k_task" => $k_task,
-                    "life_count" => $life_count
+                    "life_count" => $life_count,
+                    "animate" => $animate
                 ]
         );
     }
 
     function generate($move) {
-        global $aim, $k_task, $life_count;
+        global $aim, $k_task, $life_count, $animate;
         $first = rand(-8,8);
         $second = rand(1,3);
         if (!$move) {
             $aim = $first;
             $life_count = 3;
+            $animate = 0;
             $k_task = $second;
         }
         $clouds_ = [];
@@ -255,7 +278,8 @@
             "aim" => $aim,
             "clouds" => $clouds_,
             "k_task" => $k_task,
-            "life_count" => $life_count
+            "life_count" => $life_count,
+            "animate" => $animate
         ];
     }
 
